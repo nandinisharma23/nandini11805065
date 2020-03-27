@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include<unistd.h>
+#define at arrival_time
+#define bt burst_time
+#define gc gantt_chart
+#define rq ready_queue
+int indexOf(int value, int ar[]);
+int findSum(int ar[]);
+int min(int ar[]);
+int max(int ar[]);
+int min2(int ar[]);
+int checkSecond(int ar[],int len);
+int main()
+{
+	int i,p,l,j,k,t,temp_q,a,b;// loop iterators
+	int pID[4];
+	int tq; //time quantum
+	int burst_time[4];
+	int rbt[4];//remaining burst time
+	int arrival_time[4];
+	int gantt_chart[150];
+	int time_index[150];
+	int ready_queue[150];
+	int sum_burst;// the total of burst times of all processes
+	int size_TI,size_GC;//respective sizes of time index and gantt chart
+	int wt[4];//respective waiting time of all processes
+	int tat[4];// respective turn around time of all processes
+	double avg_wt,avg_tat;
+	int flag2;
+	int second_ite[100];//the other array
+	int x;//loop iterators
+	
+	for(i=0;i<4;i++)
+	{
+		pID[i] = i;
+	}//assigning process ID as the index value
+	
+	printf("\nEnter the arrival time in sequence:\n");
+	for(i=0;i<4;i++)
+	{
+		scanf("%d",&at[i]);
+	}
+	
+	printf("\nEnter the burst time in sequence:\n");
+	for(i=0;i<4;i++)
+	{
+		scanf("%d",&bt[i]);
+		rbt[i] = bt[i]; //copying burst time in an extra array for remaining 
+	}
+	
+	printf("\n The details as fed are as under:");
+	printf("\nProcess ID\tArrival Time\tBurst Time\n");
+	for(i=0;i<4;i++)
+	{
+		printf("%d\t\t%d\t\t%d\n",pID[i],at[i],bt[i]);
+	}
+	
+	//task of input over
+	
+	sum_burst = findSum(bt);//to the find the total of all burst times in order to set the boundary
+	printf("\n%d",sum_burst);
