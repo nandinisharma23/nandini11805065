@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<unistd.h>
+#define at arrival_time
+#define bt burst_time
+#define gc gantt_chart
+#define rq ready_queue
+int indexOf(int value, int ar[]);
+int findSum(int ar[]);
+int min(int ar[]);
+int max(int ar[]);
+int min2(int ar[]);
+int checkSecond(int ar[],int len);
+int main()
+{
+	int i,p,l,j,k,t,temp_q,a,b;           // loop iterators
+	int pID[4];
+	int tq;                    //time quantum
+	int burst_time[4];
+	int rbt[4];                //remaining burst time
+	int arrival_time[4];
+	int gantt_chart[150];
+	int time_index[150];
+	int ready_queue[150];
+	int sum_burst;                 // the total of burst times of all processes
+	int size_TI,size_GC;           //respective sizes of time index and gantt chart
+	int wt[4];            //respective waiting time of all processes
+	int tat[4];           // respective turn around time of all processes
+	double avg_wt,avg_tat;
+	int flag2;
+	int second_ite[100];            //the other array
+	int x;         //loop iterators
+	for(i=0;i<4;i++)
+	{
+		pID[i] = i;
+	}                    //assigning process ID as the index value
+	printf("\nEnter the arrival time in sequence:\n");
+	for(i=0;i<4;i++)
+	{
+		scanf("%d",&at[i]);
+	}
+	printf("\nEnter the burst time in sequence:\n");
+	for(i=0;i<4;i++)
+	{
+		scanf("%d",&bt[i]);
+		rbt[i] = bt[i];                      //copying burst time in an extra array for remaining 
+	}
+	printf("\n The details as fed are as under:");
+	printf("\nProcess ID\tArrival Time\tBurst Time\n");
+	for(i=0;i<4;i++)
+	{
+		printf("%d\t\t%d\t\t%d\n",pID[i],at[i],bt[i]);
+	}
+	sum_burst = findSum(bt);             //to the find the total of all burst times in order to set the boundary
+	printf("\n%d",sum_burst);
+        i=0;              //counter for ready queue update
+	p=0;              //to refer to current position of ready queue traversal
+	j=0;              //counter for gantt chart
+	t=0;              //counter for time index
+	temp_q=0;          //temporary variable when the process still left with burst time has to wait for others to get added to queue
+	a=0;
+	b=0;
+	flag2=0;
+	x=0;                           //counter for second_ite[] 
+	tq=3;                          //initially time quantum has to be 3
+	a = min(at);
+	gc[0] = rq[0] = indexOf(a,at);
+	time_index[0]=a;
+	while(1)                        //break from loop when condition for second iteration is over
+	{
+		p = rq[j];
+		gc[j] = p;
+		temp_q = -1;
+		if(!(p>=0&&p<=3))                  //to avoid the occurrence of segmentation fault
+		{
+			t=j+1;
+			break;
+		}
+		if(rbt[p]>=tq)
+		{
+			b = a+tq;
+			rbt[p]- = tq;
+		}
+		else
+		{
+			
+			b = a + rbt[p];
+			rbt[p] = 0;
+		}
+		if(rbt[p]>0)
+		{
+			temp_q = gc[j];
+		}               //to maintain ready queue if still remaining time is > 0 
