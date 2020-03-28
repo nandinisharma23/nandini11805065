@@ -90,3 +90,53 @@ int main()
 		{
 			temp_q = gc[j];
 		}               //to maintain ready queue if still remaining time is > 0 
+                //for updating the ready queue
+		for(l=0;l<4;l++)   //l is a counter to traverse the process id or index
+		{//to avoid including processes in ready queue which have already arrived 
+			int flag = 0;
+			for(k=0;k<=i;k++)
+			{
+				if(l == rq[k])
+				{
+					flag=1;
+				}
+			}
+			if(flag==1)
+			{
+				continue;
+			}
+			//to include all processes arrived by time b in the ready queue
+			if(at[l]<=b)
+			{
+				i++;
+				rq[i] = l;
+				if(flag2==1)//means if this is the second iteration
+				{
+					second_ite[x] = rq[i];
+					x++;
+				}
+			}
+		}//end of loop
+		if(temp_q>=0)//to add to end of ready queue, refer to #1 
+		{
+			i++;
+			rq[i]= temp_q;
+		}
+		if(b>=max(at))//condition for end of 1st iteration
+		{
+			tq=6;
+			flag2=1;
+		}
+		time_index[t+1] = b;
+		a=b;
+		t+=1;
+		j+=1;
+		int check = checkSecond(second_ite,x);
+		if(check == 1)
+		{
+			t = j+1;
+			break;
+		}//i.e. if second iteration is over break from the loop of round robin
+		//at this point the gantt chart is ready till j-1 position
+		//so we drop the ready queue in between i and current position of j
+	}//end of while loop
